@@ -163,9 +163,9 @@ function Update ()
     {
       for (var i = 0; i < 3; i++)
       {
-        enemy1 = NewEnemy({x: Math.floor((Math.random() * 380) + 120), y: - 100, score: 100});
-        enemy1.Start();
-        enemies.push(enemy1);
+        var enemytemp = NewEnemy({x: Math.floor((Math.random() * 380) + 120), y: - 100, score: 100});
+        enemytemp.Start();
+        enemies.push(enemytemp);
         //console.log(enemies.length);
         hhh = Date.now();
       }
@@ -180,37 +180,33 @@ function Update ()
       iii = Date.now();
     }
 
+      //console.log(enemies.length);
     // Enemies update
-    if (enemies.length > 0)
+    for (var i = 0; i < enemies.length; i++)
     {
-      for (var i = 0; i < enemies.length; i++)
-          enemies[i].Update(deltaTime);
+      enemies[i].Update(deltaTime);
+      //enemies[i].Fire();
+
+      // Enemy Bullets update
+      for (var j = 0; j < enemies[i].bullets.length; j++)
+      {
+        enemies[i].bullets[j].Update(deltaTime);
+      }
     }
 
     // Power-Ups update
-    if (powerUps.length > 0)
-    {
-      for (var i = 0; i < powerUps.length; i++)
-          powerUps[i].Update(deltaTime);
-    }
+    for (var i = 0; i < powerUps.length; i++)
+        powerUps[i].Update(deltaTime);
+
 
     // Player Bullets update
-    if (player.bullets.length > 0)
+    for (var i = 0; i < player.bullets.length; i++)
     {
-      for (var i = 0; i < player.bullets.length; i++)
-      {
-        player.bullets[i].Update(deltaTime);
-      }
+      player.bullets[i].Update(deltaTime);
     }
 
-    // Enemy Bullets update
-    if (enemy1.bullets.length > 0)
-    {
-      for (var i = 0; i < enemy1.bullets.length; i++)
-      {
-        enemy1.bullets[i].Update(deltaTime);
-      }
-    }
+
+
 
     // Camera update
     //camera.Update(deltaTime);
@@ -231,38 +227,27 @@ function Draw ()
     // draw the box2d world
     DrawWorld(world);
 
-    // draw Enemies
-    if (enemies.length > 0)
-    {
-      for (var i = 0; i < enemies.length; i++)
-          enemies[i].Draw(ctx);
-    }
-
     // draw the Player
     player.Draw(ctx);
 
     // draw Power-Ups
-    if (powerUps.length > 0)
-    {
-      for (var i = 0; i < powerUps.length; i++)
-          powerUps[i].Draw(ctx);
-    }
+    for (var i = 0; i < powerUps.length; i++)
+        powerUps[i].Draw(ctx);
+
 
     //draw Player Bullets
-    if (player.bullets.length > 0)
-    {
-      for (var i = 0; i < player.bullets.length; i++)
-      {
-        player.bullets[i].Draw(ctx);
-      }
-    }
+    for (var i = 0; i < player.bullets.length; i++)
+      player.bullets[i].Draw(ctx);
 
-    // Enemy Bullets update
-    if (enemy1.bullets.length > 0)
+    // draw Enemies
+    for (var i = 0; i < enemies.length; i++)
     {
-      for (var i = 0; i < enemy1.bullets.length; i++)
+      enemies[i].Draw(ctx);
+
+      // draw Bullets Enemies
+      for (var j = 0; j < enemies[i].bullets.length; j++)
       {
-        enemy1.bullets[i].Draw(ctx);
+        enemies[i].bullets[j].Draw(ctx);
       }
     }
 

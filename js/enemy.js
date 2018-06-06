@@ -53,17 +53,17 @@
           this.dir.x -= 1;
         }
 
-        // Update when the enemy shots
-        // if((Date.now() - this.lastShotTime) > this.cadency)
-        // {
-        //   var randomNumberCadency = Math.floor((Math.random() * 1000) + 0);
-        //   if((Date.now() - this.lastShotTime) > randomNumberCadency)
-        //   {
-        //     this.Fire();
-        //   }
-        //
-        //   this.lastShotTime = Date.now();
-        // }
+        //Update when the enemy shots
+        if((Date.now() - this.lastShotTime) > this.cadency)
+        {
+          var randomNumberCadency = Math.floor((Math.random() * 1000) + 0);
+          if((Date.now() - this.lastShotTime) > randomNumberCadency)
+          {
+            this.Fire();
+          }
+
+          this.lastShotTime = Date.now();
+        }
 
         this.position.x += this.dir.x * this.speed * deltaTime;
         this.position.y += this.dir.y * this.speed * deltaTime;
