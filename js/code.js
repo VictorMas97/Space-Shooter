@@ -17,8 +17,8 @@ var playerImg, powerUpImg, backgroundImg, playerBulletImg, enemyBulletImg, enemy
 
 // game camera
 var camera;
-var hhh = 0;
-var iii = 0;
+var enemyCandency = 0;
+var powerUpCandency = 0;
 
 // game objects
 var powerUps = [];
@@ -155,7 +155,7 @@ function Update ()
     background.Update(deltaTime);
 
     // create an Enemy
-    if (true && (Date.now() - hhh) > 5000)
+    if (true && (Date.now() - enemyCandency) > 5000)
     {
       for (var i = 0; i < 3; i++)
       {
@@ -163,17 +163,17 @@ function Update ()
         enemytemp.Start();
         enemies.push(enemytemp);
         //console.log(enemies.length);
-        hhh = Date.now();
+        enemyCandency = Date.now();
       }
     }
 
     //create a Power-Up
-    if (true && (Date.now() - iii) > 22500)
+    if (true && (Date.now() - powerUpCandency) > 22500)
     {
       powerUp = NewPowerUp({x: Math.floor((Math.random() * 400) + 50), y: - 100, score: 50});
       powerUp.Start();
       powerUps.push(powerUp);
-      iii = Date.now();
+      powerUpCandency = Date.now();
     }
 
       //console.log(enemies.length);

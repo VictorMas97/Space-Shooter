@@ -3,10 +3,11 @@ var player =
   img: playerImg,
   imgScale: 0.5,
 
-  //box: {x: 0.32, y: 0.57},
-
   position: {x: 0, y: 0},
   speed: 200,
+
+  box: {x: 0, y: 0},
+  boxSize: {x: 70, y: 110},
 
   cadency: 500, //ms between  shots
   lastShotTime: 0,
@@ -41,6 +42,9 @@ var player =
   {
     this.position.x = canvas.width / 2;
     this.position.y = canvas.height - 80;
+
+    this.box.x = this.position.x - 35;
+    this.box.y = this.position.y - 55;
 
     //this.body = CreateBox(world, 0, 0, this.box.x, this.box.y, this.physicsInfo);
     //this.body.SetUserData(this);
@@ -104,6 +108,9 @@ var player =
     this.position.x += dir.x * this.speed * deltaTime;
     this.position.y += dir.y * this.speed * deltaTime;
 
+    this.box.x += dir.x * this.speed * deltaTime;
+    this.box.y += dir.y * this.speed * deltaTime;
+
     // update the box position
     //this.body.GetPosition().x = this.position.x / scale;
     //this.body.GetPosition().y = (-this.position.y / scale) + 7.99;
@@ -118,9 +125,9 @@ var player =
       ctx.restore();
 
       // draw the Rectangle
-      ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
-      ctx.fillRect(this.position.x - 35, this.position.y - 55, 70, 110);
-      ctx.restore();
+      //ctx.fillStyle = 'rgba(0, 255, 0, 0.1)';
+      //ctx.fillRect(this.box.x, this.box.y, 70, 110);
+      //ctx.restore();
   },
 
   Fire: function ()
@@ -128,16 +135,17 @@ var player =
     var bullet = NewBullet({x: this.position.x - 2, y: this.position.y - 60});
     bullet.Start();
     this.bullets.push(bullet);
-    console.log(this.bullets.length);
-  }
+    //console.log(this.bullets.length);
+  },
 
-/*
-  function CheckCollisionRect (point, rectangle)
+  CheckCollision: function (enemyBulletBox)
   {
-  return point.x >= (rectangle.coord.x) &&
-  point.x <= (rectangle.coord.x + rectangle.width) &&
-  point.y >= (rectangle.coord.y) &&
-  point.y <= (rectangle.coord.y + rectangle.height);
+    if (this.box.x <= enemyBulletBox.x &&
+        this.box.x + this.boxSize.x >= enemyBulletBox.x &&
+        this.box.y <= enemyBulletBox.y &&
+        this.box.y + this.boxSize.y >= enemyBulletBox.y)
+    {
+      console.log('TOCADO');
+    }
   }
-  */
 }

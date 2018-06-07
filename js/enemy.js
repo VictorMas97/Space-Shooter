@@ -6,11 +6,12 @@
 
       sound: null,
 
-      //box: {x: 0.1, y: 0.2},
-
       dir: { x: 0, y: 1 },
       position: {x: options.x, y: options.y},
       speed: 200,
+
+      box: {x: options.x, y: options.y},
+      boxSize: {x: 110, y: 170},
 
       movementCadency: 1200, //ms between movement
       lastMovementTime: 0,
@@ -26,8 +27,8 @@
 
       Start: function ()
       {
-        //this.position.x = Math.floor((Math.random() * 380) + 120);
-        //this.position.y = canvas.height/2;
+        this.box.x = this.position.x - 110;
+        this.box.y = this.position.y - 172;
       },
 
       Update: function (deltaTime)
@@ -35,11 +36,8 @@
         // Update X Position
         if((Date.now() - this.lastMovementTime) > this.movementCadency)
         {
-
           var randomNumberXMovement = Math.floor((Math.random() * 3) - 1);
           this.dir.x = randomNumberXMovement;
-          //console.log(randomNumberXMovement);
-
           this.lastMovementTime = Date.now();
         }
 
@@ -54,19 +52,27 @@
         }
 
         //Update when the enemy shots
-        if((Date.now() - this.lastShotTime) > this.cadency)
+        if (this.position.y >= 100)
         {
-          var randomNumberCadency = Math.floor((Math.random() * 1000) + 0);
-          if((Date.now() - this.lastShotTime) > randomNumberCadency)
+          if((Date.now() - this.lastShotTime) > this.cadency)
           {
-            this.Fire();
-          }
+            var randomNumberCadency = Math.floor((Math.random() * 1000) + 0);
+            if((Date.now() - this.lastShotTime) > randomNumberCadency)
+            {
+              this.Fire();
+            }
 
-          this.lastShotTime = Date.now();
+            this.lastShotTime = Date.now();
+          }
         }
 
         this.position.x += this.dir.x * this.speed * deltaTime;
         this.position.y += this.dir.y * this.speed * deltaTime;
+
+        this.box.x += this.dir.x * this.speed * deltaTime;
+        this.box.y += this.dir.y * this.speed * deltaTime;
+
+
       },
 
       Draw: function (ctx)
@@ -79,9 +85,9 @@
         ctx.restore();
 
         // draw the Rectangle
-        ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
-        ctx.fillRect(this.position.x - 110, this.position.y - 172, 110, 170);
-        ctx.restore();
+        //ctx.fillStyle = 'rgba(0, 255, 0, 0.1)';
+        //ctx.fillRect(this.box.x, this.box.y, 110, 170);
+        //ctx.restore();
       },
 
       Fire: function ()
@@ -90,6 +96,17 @@
         bullet.Start();
         this.bullets.push(bullet);
         //console.log(this.bullets.length);
+      },
+
+      CheckCollision: function (playerBulletBox)
+      {
+        if (this.box.x <= playerBulletBox.x &&
+            this.box.x + this.boxSize.x >= playerBulletBox.x &&
+            this.box.y <= playerBulletBox.y &&
+            this.box.y + this.boxSize.y >= playerBulletBox.y)
+        {
+          console.log('ENEMIGO TOCADO');
+        }
       }
     }
   }

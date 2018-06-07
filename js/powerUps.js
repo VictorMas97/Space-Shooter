@@ -10,6 +10,8 @@ function NewPowerUp (options)
       position: {x: options.x, y: options.y},
       speed: 100,
 
+      box: {x: options.x, y: options.y},
+
       score: options.score,
 
       animation: {
@@ -41,27 +43,21 @@ function NewPowerUp (options)
                           this.frameWidth, this.frameHeight);
           }
       },
-/*
-      physicsInfo: {
-          density: 10,
-          fixedRotation: true,
-          linearDamping: 8,
-          type: b2Body.b2_dynamicBody
-      },
-
-
-      body: null,
-      */
 
     Start: function ()
     {
-      //this.body = CreateBox(world, this.position.x / scale, this.position.y / scale, this.width, this.height, this.physicsInfo);
+      this.box.x = this.position.x - 25;
+      this.box.y = this.position.y - 25;
     },
 
     Update: function (deltaTime)
     {
       this.position.y += this.dir.y * this.speed * deltaTime;
+      this.box.y += this.dir.y * this.speed * deltaTime;
+
       this.animation.Update(deltaTime);
+
+      player.CheckCollision(this.box)
     },
 
     Draw: function (ctx)
@@ -77,9 +73,9 @@ function NewPowerUp (options)
       ctx.restore();
 
       // draw the Rectangle
-      ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
-      ctx.fillRect(this.position.x - 25, this.position.y -25, 50, 50);
-      ctx.restore();
+      // ctx.fillStyle = 'rgba(0, 255, 0, 0.1)';
+      // ctx.fillRect(this.box.x, this.box.y, 50, 50);
+      // ctx.restore();
     }
   }
 }

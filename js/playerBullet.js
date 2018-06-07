@@ -6,16 +6,14 @@
 
       sound: null,
 
-      //box: {x: 0.1, y: 0.2},
-
       dir: { x: 0, y: -1 },
       position: {x: options.x, y: options.y},
       speed: 800,
 
+      box: {x: options.x, y: options.y},
+
       Start: function ()
       {
-        //this.position.x = playerPosX - 2;
-        //this.position.y = playerPosY - 60;
         this.sound = document.getElementById('sound_weapon_player');
         this.sound.play();
       },
@@ -29,6 +27,12 @@
         // }
 
         this.position.y += this.dir.y * this.speed * deltaTime;
+        this.box.y += this.dir.y * this.speed * deltaTime;
+
+        for (var i = 0; i < enemies.length; i++)
+        {
+          enemies[i].CheckCollision(this.box);
+        }
       },
 
       Draw: function (ctx)
@@ -40,15 +44,15 @@
         ctx.restore();
 
         // draw the Rectangle
-        ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
-        ctx.fillRect(this.position.x, this.position.y, 4, 20);
-        ctx.restore();
+        //ctx.fillStyle = 'rgba(0, 255, 0, 0.1)';
+        //ctx.fillRect(this.box.x, this.box.y, 4, 20);
+        //ctx.restore();
       },
 
       DeleteBullet: function ()
       {
         player.bullets.remove(0);
-        console.log(player.bullets.length);
+        //console.log(player.bullets.length);
       }
     }
   }

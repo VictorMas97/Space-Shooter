@@ -6,16 +6,14 @@
 
       sound: null,
 
-      //box: {x: 0.1, y: 0.2},
-
       dir: { x: 0, y: 1 },
       position: {x: options.x, y: options.y},
       speed: 800,
 
-      Start: function (enemyPosX, enemyPosY)
+      box: {x: options.x, y: options.y},
+
+      Start: function ()
       {
-        //this.position.x = enemyPosX - 57;
-        //this.position.y = enemyPosY;
         this.sound = document.getElementById('sound_weapon_enemy');
         this.sound.play();
       },
@@ -23,6 +21,9 @@
       Update: function (deltaTime)
       {
         this.position.y += this.dir.y * this.speed * deltaTime;
+        this.box.y += this.dir.y * this.speed * deltaTime;
+
+        player.CheckCollision(this.box)
       },
 
       Draw: function (ctx)
@@ -34,9 +35,9 @@
         ctx.restore();
 
         // draw the Rectangle
-        ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
-        ctx.fillRect(this.position.x, this.position.y, 5, 22);
-        ctx.restore();
+        //ctx.fillStyle = 'rgba(0, 255, 0, 0.1)';
+        //ctx.fillRect(this.box.x, this.box.y, 5, 22);
+        //ctx.restore();
       }
     }
   }
