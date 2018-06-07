@@ -116,6 +116,11 @@ var player =
       ctx.scale(this.imgScale, this.imgScale);
       ctx.drawImage(playerImg, -playerImg.width / 2, -playerImg.height / 2);
       ctx.restore();
+
+      // draw the Rectangle
+      ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
+      ctx.fillRect(this.position.x - 35, this.position.y - 55, 70, 110);
+      ctx.restore();
   },
 
   Fire: function ()
@@ -125,4 +130,14 @@ var player =
     this.bullets.push(bullet);
     console.log(this.bullets.length);
   }
+
+/*
+  function CheckCollisionRect (point, rectangle)
+  {
+  return point.x >= (rectangle.coord.x) &&
+  point.x <= (rectangle.coord.x + rectangle.width) &&
+  point.y >= (rectangle.coord.y) &&
+  point.y <= (rectangle.coord.y + rectangle.height);
+  }
+  */
 }

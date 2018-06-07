@@ -75,6 +75,11 @@ function NewPowerUp (options)
       ctx.scale(this.imgScale, this.imgScale);
       this.animation.Draw(ctx);
       ctx.restore();
+
+      // draw the Rectangle
+      ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
+      ctx.fillRect(this.position.x - 25, this.position.y -25, 50, 50);
+      ctx.restore();
     }
   }
 }

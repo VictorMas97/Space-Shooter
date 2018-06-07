@@ -38,6 +38,11 @@
         ctx.scale(this.imgScale.x, this.imgScale.y);
         ctx.drawImage(playerBulletImg, 0, 0);
         ctx.restore();
+
+        // draw the Rectangle
+        ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
+        ctx.fillRect(this.position.x, this.position.y, 4, 20);
+        ctx.restore();
       },
 
       DeleteBullet: function ()

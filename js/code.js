@@ -21,10 +21,6 @@ var hhh = 0;
 var iii = 0;
 
 // game objects
-var enemy1;
-var enemy2;
-var enemy3;
-var enemy4;
 var powerUps = [];
 var enemies = [];
 
@@ -163,7 +159,7 @@ function Update ()
     {
       for (var i = 0; i < 3; i++)
       {
-        var enemytemp = NewEnemy({x: Math.floor((Math.random() * 380) + 120), y: - 100, score: 100});
+        var enemytemp = NewEnemy({x: Math.floor((Math.random() * 380) + 120), y: -100, score: 100});
         enemytemp.Start();
         enemies.push(enemytemp);
         //console.log(enemies.length);
@@ -185,7 +181,6 @@ function Update ()
     for (var i = 0; i < enemies.length; i++)
     {
       enemies[i].Update(deltaTime);
-      //enemies[i].Fire();
 
       // Enemy Bullets update
       for (var j = 0; j < enemies[i].bullets.length; j++)
@@ -201,12 +196,7 @@ function Update ()
 
     // Player Bullets update
     for (var i = 0; i < player.bullets.length; i++)
-    {
       player.bullets[i].Update(deltaTime);
-    }
-
-
-
 
     // Camera update
     //camera.Update(deltaTime);

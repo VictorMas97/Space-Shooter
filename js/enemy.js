@@ -77,6 +77,11 @@
         ctx.scale(this.imgScale, this.imgScale);
         ctx.drawImage(enemy1Img, 0, 0);
         ctx.restore();
+
+        // draw the Rectangle
+        ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
+        ctx.fillRect(this.position.x - 110, this.position.y - 172, 110, 170);
+        ctx.restore();
       },
 
       Fire: function ()
