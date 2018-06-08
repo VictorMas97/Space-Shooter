@@ -12,6 +12,8 @@
 
       box: {x: options.x, y: options.y},
 
+      isDead: false,
+
       Start: function ()
       {
         this.sound = document.getElementById('sound_weapon_player');
@@ -28,11 +30,6 @@
 
         this.position.y += this.dir.y * this.speed * deltaTime;
         this.box.y += this.dir.y * this.speed * deltaTime;
-
-        for (var i = 0; i < enemies.length; i++)
-        {
-          enemies[i].CheckCollision(this.box);
-        }
       },
 
       Draw: function (ctx)
@@ -44,7 +41,7 @@
         ctx.restore();
 
         // draw the Rectangle
-        //ctx.fillStyle = 'rgba(0, 255, 0, 0.1)';
+        //ctx.fillStyle = 'rgba(0, 255, 0, 1)';
         //ctx.fillRect(this.box.x, this.box.y, 4, 20);
         //ctx.restore();
       },

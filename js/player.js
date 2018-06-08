@@ -26,17 +26,7 @@ var player =
   topBoundary: 70,
   bottomBoundary: 720,
 
-
-  // physicsInfo:
-  // {
-  //     'density': 1,
-  //     'fixedRotation' : true,
-  //     'user_data': player,
-  //     'type': b2Body.b2_kinematic,
-  //     'restitution': 0.0
-  // },
-  //
-  // body: null,
+  isDead: false,
 
   Start: function ()
   {
@@ -45,9 +35,6 @@ var player =
 
     this.box.x = this.position.x - 35;
     this.box.y = this.position.y - 55;
-
-    //this.body = CreateBox(world, 0, 0, this.box.x, this.box.y, this.physicsInfo);
-    //this.body.SetUserData(this);
   },
 
   Update: function (deltaTime)
@@ -110,10 +97,6 @@ var player =
 
     this.box.x += dir.x * this.speed * deltaTime;
     this.box.y += dir.y * this.speed * deltaTime;
-
-    // update the box position
-    //this.body.GetPosition().x = this.position.x / scale;
-    //this.body.GetPosition().y = (-this.position.y / scale) + 7.99;
   },
 
   Draw: function (ctx)
@@ -135,7 +118,6 @@ var player =
     var bullet = NewBullet({x: this.position.x - 2, y: this.position.y - 60});
     bullet.Start();
     this.bullets.push(bullet);
-    //console.log(this.bullets.length);
   },
 
   CheckCollision: function (enemyBulletBox)
@@ -145,7 +127,7 @@ var player =
         this.box.y <= enemyBulletBox.y &&
         this.box.y + this.boxSize.y >= enemyBulletBox.y)
     {
-      console.log('TOCADO');
+      return true;
     }
   }
 }

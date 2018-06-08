@@ -25,6 +25,8 @@
       rightBoundary: 480,
       leftBoundary: 120,
 
+      isDead: false,
+
       Start: function ()
       {
         this.box.x = this.position.x - 110;
@@ -71,8 +73,6 @@
 
         this.box.x += this.dir.x * this.speed * deltaTime;
         this.box.y += this.dir.y * this.speed * deltaTime;
-
-
       },
 
       Draw: function (ctx)
@@ -105,7 +105,7 @@
             this.box.y <= playerBulletBox.y &&
             this.box.y + this.boxSize.y >= playerBulletBox.y)
         {
-          console.log('ENEMIGO TOCADO');
+          return true;
         }
       }
     }

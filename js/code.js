@@ -1,5 +1,5 @@
 
-var canvas;
+//var canvas;
 var ctx;
 
 var pi_2 = Math.PI * 2;
@@ -40,7 +40,7 @@ function Init ()
             };
     }) ();
 
-    canvas = document.getElementById("my_canvas");
+    //canvas = document.getElementById("my_canvas");
 
     if (canvas.getContext)
     {
@@ -151,6 +151,12 @@ function Update ()
     // Player update
     player.Update(deltaTime);
 
+    // Destroy Enemy
+    if (player.isDead)
+    {
+
+    }
+
     // Background update
     background.Update(deltaTime);
 
@@ -176,17 +182,47 @@ function Update ()
       powerUpCandency = Date.now();
     }
 
-      //console.log(enemies.length);
     // Enemies update
     for (var i = 0; i < enemies.length; i++)
     {
       enemies[i].Update(deltaTime);
 
+      // CheckCollision Enemies - PlayerBullets
+      for (var j = 0; j < player.bullets.length; j++)
+      {
+        if(enemies[i].CheckCollision(player.bullets[j].box))
+        {
+          enemies[i].isDead = true;
+          player.bullets[j].isDead = true;
+        }
+      }
+
       // Enemy Bullets update
       for (var j = 0; j < enemies[i].bullets.length; j++)
       {
         enemies[i].bullets[j].Update(deltaTime);
+
+        // CheckCollision Player - EnemyBullets
+        if(player.CheckCollision(enemies[i].bullets[j].box))
+        {
+          player.isDead = true;
+          enemies[i].bullets[j].isDead = true;
+        }
       }
+      // Destroy Enemy Bullets
+      for (var j = 0; j < enemies[i].bullets.length; j++)
+      {
+        if (enemies[i].bullets[j].isDead)
+        {
+          enemies[i].bullets.splice(j, 1);
+        }
+      }
+        // Destroy Enemy
+        if (enemies[i].isDead)
+        {
+          enemies.splice(i, 1);
+          break;
+        }
     }
 
     // Power-Ups update
@@ -196,7 +232,16 @@ function Update ()
 
     // Player Bullets update
     for (var i = 0; i < player.bullets.length; i++)
+    {
       player.bullets[i].Update(deltaTime);
+
+      // Destroy Player Bullets
+      if (player.bullets[i].isDead)
+      {
+        player.bullets.splice(i, 1);
+      }
+    }
+
 
     // Camera update
     //camera.Update(deltaTime);
@@ -267,217 +312,3 @@ function DrawWorld (world)
     world.DrawDebugData();
     ctx.restore();
 }
-
-
-
-
-
-
-
-
-
-
-
-// var canvas;
-// var ctx;
-//
-// var pi_2 = Math.PI * 2;
-//
-// var fixedDeltaTime = 0.01666666; // 60fps: 1 frame each 16.66666ms
-// var deltaTime = fixedDeltaTime;
-//
-// var time = 0,
-//     FPS  = 0,
-//     frames    = 0,
-//     acumDelta = 0;
-//
-// // images references
-// var playerImg, floorImg, mountainImg;
-//
-// // game camera
-// var camera;
-//
-// // game objects
-// var floors = [];
-//
-// function Init ()
-// {
-//     // preparamos la variable para el refresco de la pantalla
-//     window.requestAnimationFrame = (function (evt) {
-//         return window.requestAnimationFrame ||
-//             window.mozRequestAnimationFrame ||
-//             window.webkitRequestAnimationFrame ||
-//             window.msRequestAnimationFrame ||
-//             function (callback) {
-//                 window.setTimeout(callback, fixedDeltaTime * 1000);
-//             };
-//     }) ();
-//
-//     canvas = document.getElementById("my_canvas");
-//
-//     if (canvas.getContext)
-//     {
-//         ctx = canvas.getContext('2d');
-//
-//         floorImg = new Image();
-//         floorImg.src = "./media/wall.png";
-//
-//         // img ref: https://orig00.deviantart.net/fa75/f/2017/267/3/3/mountain_sprite_001_by_jonata_d-dbogk4i.png
-//         mountainImg = new Image();
-//         mountainImg.src = "./media/mountain.png";
-//
-//         playerImg = new Image();
-//         playerImg.src = "./media/player.png";
-//         playerImg.onload = Start();
-//     }
-// }
-//
-// function Start ()
-// {
-//     // setup keyboard events
-//     SetupKeyboardEvents();
-//
-//     // setup mouse events
-//     SetupMouseEvents();
-//
-//     // initialize Box2D
-//     PreparePhysics(ctx);
-//
-//     // setup floors
-//     var floor1 = NewFloor({x: 120, y: 100, width: 1.0, height: 0.2});
-//     floor1.Start();
-//     floors.push(floor1);
-//
-//     var floor2 = NewFloor({x: 600, y: 80, width: 1.0, height: 0.2});
-//     floor2.Start();
-//     floors.push(floor2);
-//
-//     var floor3 = NewFloor({x: 900, y: 120, width: 1.0, height: 0.2});
-//     floor3.Start();
-//     floors.push(floor3);
-//
-//     var floor4 = NewFloor({x: 1200, y: 160, width: 1.0, height: 0.2});
-//     floor4.Start();
-//     floors.push(floor4);
-//
-//     // init background
-//     background.Start();
-//
-//     // init player
-//     player.Start();
-//
-//     // init camera
-//     camera = new Camera(player);
-//     camera.Start();
-//
-//     // first call to the game loop
-//     Loop();
-// }
-//
-// function Loop ()
-// {
-//     requestAnimationFrame(Loop);
-//
-//     var now = Date.now();
-//     deltaTime = now - time;
-//     if (deltaTime > 1000) // si el tiempo es mayor a 1 seg: se descarta
-//         deltaTime = 0;
-//     time = now;
-//
-//     frames++;
-//     acumDelta += deltaTime;
-//
-//     if (acumDelta > 1000)
-//     {
-//         FPS = frames;
-//         frames = 0;
-//         acumDelta -= 1000;
-//     }
-//
-//     // transform the deltaTime from miliseconds to seconds
-//     deltaTime /= 1000;
-//
-//     // update the input data
-//     input.update();
-//
-//     // Game logic -------------------
-//     Update();
-//
-//     // Draw the game ----------------
-//     Draw();
-//
-//     // reset input data
-//     input.postUpdate();
-// }
-//
-// function Update ()
-// {
-//
-//     // update physics
-//     // Step(timestep , velocity iterations, position iterations)
-//     world.Step(deltaTime, 8, 3);
-//     world.ClearForces();
-//
-//     // player logic
-//     if (input.isKeyPressed(KEY_LEFT))
-//         player.moveLeft = true;
-//
-//     if (input.isKeyPressed(KEY_RIGHT))
-//         player.moveRight = true;
-//
-//     if (input.isKeyPressed(KEY_UP))
-//         player.Jump();
-//
-//     // player update
-//     player.Update(deltaTime);
-//
-//     // camera update
-//     camera.Update(deltaTime);
-// }
-//
-// function Draw ()
-// {
-//     // clean the canvas
-//     ctx.clearRect(0, 0, canvas.width, canvas.height);
-//
-//     // draw the background (with the parallax)
-//     background.Draw(ctx);
-//
-//     // camera transform: translate
-//     ctx.save();
-//     ctx.translate(-camera.position.x, -camera.position.y);
-//
-//     // draw the box2d world
-//     DrawWorld(world);
-//
-//     // draw the platforms
-//     for (var i = 0; i < floors.length; i++)
-//         floors[i].Draw(ctx);
-//
-//     // draw the player
-//     player.Draw(ctx);
-//
-//     // camera transform: restore
-//     ctx.restore();
-//
-//     // draw the player score
-//     ctx.fillStyle = "white";
-//     ctx.font = "26px Comic Sans MS";
-//     ctx.fillText('Score: ' + player.score, 660, 24);
-//
-//     // draw the FPS
-//     ctx.fillStyle = "white";
-//     ctx.font = "10px Arial";
-//     ctx.fillText('FPS: ' + FPS, 10, 10);
-//     ctx.fillText('deltaTime: ' + Math.round(1 / deltaTime), 10, 20);
-// }
-//
-// function DrawWorld (world)
-// {
-//     // Transform the canvas coordinates to cartesias coordinates
-//     ctx.save();
-//     ctx.translate(0, canvas.height);
-//     ctx.scale(1, -1);
-//     world.DrawDebugData();
-//     ctx.restore();
-// }

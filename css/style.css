@@ -1,21 +1,24 @@
 
-* {
+*
+{
     margin: 0;
     padding: 0;
     list-style: none;
     text-decoration:: none;
 }
 
-body {
+body
+{
     background-color: gray;
 }
 
-#container {
-    margin: 20px auto;
-    width: 800px;
+#container
+{
+    margin: 30px auto;
+    width: 500px;
 }
 
-#my_canvas {
+#my_canvas
+{
     background-color: white;
 }
-

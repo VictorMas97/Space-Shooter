@@ -12,6 +12,8 @@
 
       box: {x: options.x, y: options.y},
 
+      isDead: false,
+
       Start: function ()
       {
         this.sound = document.getElementById('sound_weapon_enemy');
