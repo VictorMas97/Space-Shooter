@@ -83,11 +83,6 @@
         ctx.scale(this.imgScale, this.imgScale);
         ctx.drawImage(enemy1Img, 0, 0);
         ctx.restore();
-
-        // draw the Rectangle
-        //ctx.fillStyle = 'rgba(0, 255, 0, 0.1)';
-        //ctx.fillRect(this.box.x, this.box.y, 110, 170);
-        //ctx.restore();
       },
 
       Fire: function ()
@@ -95,18 +90,14 @@
         var bullet = NewEnemyBullet({x: this.position.x - 57, y: this.position.y});
         bullet.Start();
         this.bullets.push(bullet);
-        //console.log(this.bullets.length);
       },
 
       CheckCollision: function (playerBulletBox)
       {
-        if (this.box.x <= playerBulletBox.x &&
-            this.box.x + this.boxSize.x >= playerBulletBox.x &&
-            this.box.y <= playerBulletBox.y &&
-            this.box.y + this.boxSize.y >= playerBulletBox.y)
-        {
-          return true;
-        }
+        return this.box.x <= playerBulletBox.x &&
+               this.box.x + this.boxSize.x >= playerBulletBox.x &&
+               this.box.y <= playerBulletBox.y &&
+               this.box.y + this.boxSize.y >= playerBulletBox.y
       }
     }
   }

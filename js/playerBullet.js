@@ -22,12 +22,6 @@
 
       Update: function (deltaTime)
       {
-        //delete bullets out of the screen
-        // if (this.position.y <= 0)
-        // {
-        //   player.DeleteBullet();
-        // }
-
         this.position.y += this.dir.y * this.speed * deltaTime;
         this.box.y += this.dir.y * this.speed * deltaTime;
       },
@@ -39,17 +33,6 @@
         ctx.scale(this.imgScale.x, this.imgScale.y);
         ctx.drawImage(playerBulletImg, 0, 0);
         ctx.restore();
-
-        // draw the Rectangle
-        //ctx.fillStyle = 'rgba(0, 255, 0, 1)';
-        //ctx.fillRect(this.box.x, this.box.y, 4, 20);
-        //ctx.restore();
-      },
-
-      DeleteBullet: function ()
-      {
-        player.bullets.remove(0);
-        //console.log(player.bullets.length);
       }
     }
   }

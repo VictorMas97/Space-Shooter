@@ -26,8 +26,6 @@ var player =
   topBoundary: 70,
   bottomBoundary: 720,
 
-  isDead: false,
-
   Start: function ()
   {
     this.position.x = canvas.width / 2;
@@ -106,11 +104,6 @@ var player =
       ctx.scale(this.imgScale, this.imgScale);
       ctx.drawImage(playerImg, -playerImg.width / 2, -playerImg.height / 2);
       ctx.restore();
-
-      // draw the Rectangle
-      //ctx.fillStyle = 'rgba(0, 255, 0, 0.1)';
-      //ctx.fillRect(this.box.x, this.box.y, 70, 110);
-      //ctx.restore();
   },
 
   Fire: function ()
@@ -122,12 +115,9 @@ var player =
 
   CheckCollision: function (enemyBulletBox)
   {
-    if (this.box.x <= enemyBulletBox.x &&
-        this.box.x + this.boxSize.x >= enemyBulletBox.x &&
-        this.box.y <= enemyBulletBox.y &&
-        this.box.y + this.boxSize.y >= enemyBulletBox.y)
-    {
-      return true;
-    }
+    return this.box.x <= enemyBulletBox.x &&
+           this.box.x + this.boxSize.x >= enemyBulletBox.x &&
+           this.box.y <= enemyBulletBox.y &&
+           this.box.y + this.boxSize.y >= enemyBulletBox.y
   }
 }

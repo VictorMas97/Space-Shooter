@@ -35,11 +35,6 @@
         ctx.scale(this.imgScale.x, this.imgScale.y);
         ctx.drawImage(enemyBulletImg, 0, 0);
         ctx.restore();
-
-        // draw the Rectangle
-        //ctx.fillStyle = 'rgba(0, 255, 0, 0.1)';
-        //ctx.fillRect(this.box.x, this.box.y, 5, 22);
-        //ctx.restore();
       }
     }
   }

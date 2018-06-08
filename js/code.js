@@ -13,7 +13,7 @@ var time = 0,
     acumDelta = 0;
 
 // images references
-var playerImg, powerUpImg, backgroundImg, playerBulletImg, enemyBulletImg, enemy1Img;
+var playerImg, powerUpImg, backgroundImg, playerBulletImg, enemyBulletImg, enemy1Img, gameOverImg;
 
 // game camera
 var camera;
@@ -23,6 +23,9 @@ var powerUpCandency = 0;
 // game objects
 var powerUps = [];
 var enemies = [];
+
+// game over bool
+var gameOver = false;
 
 function Init ()
 {
@@ -52,6 +55,9 @@ function Init ()
         powerUpImg = new Image();
         powerUpImg.src = "./media/powerUp.png";
 
+        gameOverImg = new Image();
+        gameOverImg.src = "./media/gameOver.png";
+
         playerBulletImg = new Image();
         playerBulletImg.src = "./media/playerBullet.png";
 
@@ -76,7 +82,7 @@ function Start ()
     SetupMouseEvents();
 
     // initialize Box2D
-    PreparePhysics(ctx);
+    //PreparePhysics(ctx);
 
     // init Player
     player.Start();
@@ -126,12 +132,8 @@ function Loop ()
 
 function Update ()
 {
-
-    // update physics
-    // Step(timestep , velocity iterations, position iterations)
-    // world.Step(deltaTime, 8, 3);
-    // world.ClearForces();
-
+  if (!gameOver)
+  {
     // Player logic
     if (input.isKeyPressed(KEY_D))
         player.moveRight = true;
@@ -151,12 +153,6 @@ function Update ()
     // Player update
     player.Update(deltaTime);
 
-    // Destroy Enemy
-    if (player.isDead)
-    {
-
-    }
-
     // Background update
     background.Update(deltaTime);
 
@@ -168,7 +164,6 @@ function Update ()
         var enemytemp = NewEnemy({x: Math.floor((Math.random() * 380) + 120), y: -100, score: 100});
         enemytemp.Start();
         enemies.push(enemytemp);
-        //console.log(enemies.length);
         enemyCandency = Date.now();
       }
     }
@@ -195,6 +190,18 @@ function Update ()
           enemies[i].isDead = true;
           player.bullets[j].isDead = true;
         }
+
+        // Check Player Bullets out of the canvas
+        if (player.bullets[j].position.y <= 0)
+        {
+          player.bullets[j].isDead = true;
+        }
+      }
+
+      // Check Enemy out of the canvas
+      if (enemies[i].position.y >= canvas.height + 150)
+      {
+        enemies[i].isDead = true;
       }
 
       // Enemy Bullets update
@@ -205,10 +212,17 @@ function Update ()
         // CheckCollision Player - EnemyBullets
         if(player.CheckCollision(enemies[i].bullets[j].box))
         {
-          player.isDead = true;
+          gameOver = true;
+          enemies[i].bullets[j].isDead = true;
+        }
+
+        // Check Enemy Bullets out of the canvas
+        if (enemies[i].bullets[j].position.y >= canvas.height)
+        {
           enemies[i].bullets[j].isDead = true;
         }
       }
+
       // Destroy Enemy Bullets
       for (var j = 0; j < enemies[i].bullets.length; j++)
       {
@@ -229,7 +243,6 @@ function Update ()
     for (var i = 0; i < powerUps.length; i++)
         powerUps[i].Update(deltaTime);
 
-
     // Player Bullets update
     for (var i = 0; i < player.bullets.length; i++)
     {
@@ -242,9 +255,9 @@ function Update ()
       }
     }
 
-
     // Camera update
     //camera.Update(deltaTime);
+  }
 }
 
 function Draw ()
@@ -260,7 +273,7 @@ function Draw ()
     //ctx.translate(-camera.position.x, -camera.position.y);
 
     // draw the box2d world
-    DrawWorld(world);
+    //DrawWorld(world);
 
     // draw the Player
     player.Draw(ctx);
@@ -301,6 +314,13 @@ function Draw ()
     ctx.fillText('deltaTime: ' + Math.round(1 / deltaTime), 10, 20);
 
     //ctx.drawImage(playerImg, 100, 100);
+
+    if (gameOver)
+    {
+      ctx.save();
+      ctx.drawImage(gameOverImg, -10, 50);
+      ctx.restore();
+    }
 }
 
 function DrawWorld (world)

@@ -62,20 +62,11 @@ function NewPowerUp (options)
 
     Draw: function (ctx)
     {
-      //var bodyPosition = this.body.GetPosition();
-      //var posX = bodyPosition.x * scale;
-      //var posY = Math.abs((bodyPosition.y * scale) - ctx.canvas.height);
-
       ctx.save();
       ctx.translate(this.position.x, this.position.y);
       ctx.scale(this.imgScale, this.imgScale);
       this.animation.Draw(ctx);
       ctx.restore();
-
-      // draw the Rectangle
-      // ctx.fillStyle = 'rgba(0, 255, 0, 0.1)';
-      // ctx.fillRect(this.box.x, this.box.y, 50, 50);
-      // ctx.restore();
     }
   }
 }
