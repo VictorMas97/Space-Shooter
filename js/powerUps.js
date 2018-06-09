@@ -11,6 +11,8 @@ function NewPowerUp (options)
       speed: 100,
 
       box: {x: options.x, y: options.y},
+      boxSize: {x: 50, y: 50},
+      boxOffset: {x: -25, y: -25},
 
       score: options.score,
 
@@ -46,18 +48,14 @@ function NewPowerUp (options)
 
     Start: function ()
     {
-      this.box.x = this.position.x - 25;
-      this.box.y = this.position.y - 25;
+      this.box.x = this.position.x + this.boxOffset.x;
+      this.box.y = this.position.y + this.boxOffset.y;
     },
 
     Update: function (deltaTime)
     {
-      this.position.y += this.dir.y * this.speed * deltaTime;
-      this.box.y += this.dir.y * this.speed * deltaTime;
-
+      this.UpdatePositionAndBox();
       this.animation.Update(deltaTime);
-
-      player.CheckCollision(this.box)
     },
 
     Draw: function (ctx)
@@ -67,6 +65,12 @@ function NewPowerUp (options)
       ctx.scale(this.imgScale, this.imgScale);
       this.animation.Draw(ctx);
       ctx.restore();
+    },
+
+    UpdatePositionAndBox: function ()
+    {
+      this.position.y += this.dir.y * this.speed * deltaTime;
+      this.box.y += this.dir.y * this.speed * deltaTime;
     }
   }
 }

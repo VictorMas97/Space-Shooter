@@ -7,6 +7,9 @@ var background =
 
   sound: null,
 
+  endPosition: -255,
+  startPosition: 255,
+
   speed: 70,
   imgScale: 3.2,
 
@@ -18,17 +21,16 @@ var background =
   Update: function (deltaTime)
   {
     this.sound.play();
-    this.position.y += -1 * this.speed * deltaTime;
-    this.position2.y += -1 * this.speed * deltaTime;
+    this.UpdatePosition();
 
-    if (this.position.y <= -255)
+    if (this.position.y <= this.endPosition)
     {
-      this.position.y = 255;
+      this.position.y = this.startPosition;
     }
 
-    else if (this.position2.y <= -255)
+    else if (this.position2.y <= this.endPosition)
     {
-      this.position2.y = 255;
+      this.position2.y = this.startPosition;
     }
   },
 
@@ -39,6 +41,17 @@ var background =
       ctx.drawImage(backgroundImg, this.position.x, this.position.y);
       ctx.drawImage(backgroundImg, this.position2.x, this.position2.y);
       ctx.restore();
+  },
+
+  UpdatePosition: function ()
+  {
+    this.position.y += -1 * this.speed * deltaTime;
+    this.position2.y += -1 * this.speed * deltaTime;
+  },
+
+  Reposistion: function (oldPosition)  // No funciona
+  {
+    oldPosition = this.startPosition;
   }
 }
 

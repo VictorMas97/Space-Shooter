@@ -9,7 +9,6 @@ var KEY_PAUSE = 19;
 var KEY_SPACE = 32;
 
 var input = {
-    mouse: { x: 0, y: 0 },
     keyboard: {
         keyup: {},
         keypressed: {}
@@ -63,27 +62,4 @@ function SetupKeyboardEvents ()
         else if (element.attachEvent)
             element.attachEvent(eventName, func);
     }
-}
-
-function SetupMouseEvents ()
-{
-    // mouse click event
-    canvas.addEventListener("mousedown", MouseDown, false);
-    // mouse move event
-    canvas.addEventListener("mousemove", MouseMove, false);
-}
-
-function MouseDown (event)
-{
-    var rect = canvas.getBoundingClientRect();
-    var clickX = event.clientX - rect.left;
-    var clickY = event.clientY - rect.top;
-    //console.log("MouseDown: " + "X=" + clickX + ", Y=" + clickY);
-}
-
-function MouseMove (event)
-{
-    var rect = canvas.getBoundingClientRect();
-    input.mouse.x = event.clientX - rect.left;
-    input.mouse.y = event.clientY - rect.top;
 }

@@ -22,10 +22,7 @@
 
       Update: function (deltaTime)
       {
-        this.position.y += this.dir.y * this.speed * deltaTime;
-        this.box.y += this.dir.y * this.speed * deltaTime;
-
-        player.CheckCollision(this.box)
+        this.UpdatePositionAndBox();
       },
 
       Draw: function (ctx)
@@ -33,8 +30,14 @@
         ctx.save();
         ctx.translate(this.position.x, this.position.y);
         ctx.scale(this.imgScale.x, this.imgScale.y);
-        ctx.drawImage(enemyBulletImg, 0, 0);
+        ctx.drawImage(this.img, 0, 0);
         ctx.restore();
+      },
+
+      UpdatePositionAndBox: function ()
+      {
+        this.position.y += this.dir.y * this.speed * deltaTime;
+        this.box.y += this.dir.y * this.speed * deltaTime;
       }
     }
   }

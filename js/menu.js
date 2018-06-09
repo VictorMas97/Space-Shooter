@@ -1,5 +1,4 @@
 var canvas;
-//tetris = document.getElementById('tetris_music');
 
 var runGame = function()
 {

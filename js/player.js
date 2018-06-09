@@ -8,12 +8,16 @@ var player =
 
   box: {x: 0, y: 0},
   boxSize: {x: 70, y: 110},
+  boxOffset: {x: -35, y: -55},
 
   cadency: 500, //ms between  shots
   lastShotTime: 0,
   bullets: [],
+  bulletOffset: {x: -2, y: -60},
 
   score: 0,
+
+  sound: null,
 
   moveRight: false,
   moveLeft: false,
@@ -26,16 +30,40 @@ var player =
   topBoundary: 70,
   bottomBoundary: 720,
 
+  isDead: false,
+
   Start: function ()
   {
     this.position.x = canvas.width / 2;
     this.position.y = canvas.height - 80;
 
-    this.box.x = this.position.x - 35;
-    this.box.y = this.position.y - 55;
+    this.box.x = this.position.x + this.boxOffset.x;
+    this.box.y = this.position.y + this.boxOffset.y;
+
+    this.sound = document.getElementById('sound_explosion_player');
   },
 
   Update: function (deltaTime)
+  {
+    this.UpdateInput();
+
+    if (this.fire)
+    {
+      this.UpdateFire();
+      this.fire = false;
+    }
+  },
+
+  Draw: function (ctx)
+  {
+      ctx.save();
+      ctx.translate(this.position.x, this.position.y);
+      ctx.scale(this.imgScale, this.imgScale);
+      ctx.drawImage(playerImg, -playerImg.width / 2, -playerImg.height / 2);
+      ctx.restore();
+  },
+
+  UpdateInput: function ()
   {
     var dir = { x: 0, y: 0 };
 
@@ -79,36 +107,34 @@ var player =
       this.moveDown = false;
     }
 
-    if (this.fire)
-    {
-      if((Date.now() - this.lastShotTime) > this.cadency)
-      {
-        this.Fire();
-        this.lastShotTime = Date.now();
-      }
-
-      this.fire = false;
-    }
-
-    this.position.x += dir.x * this.speed * deltaTime;
-    this.position.y += dir.y * this.speed * deltaTime;
-
-    this.box.x += dir.x * this.speed * deltaTime;
-    this.box.y += dir.y * this.speed * deltaTime;
+    this.UpdatePosition(dir);
+    this.UpdateBoxPosition(dir);
   },
 
-  Draw: function (ctx)
+  UpdatePosition: function (direction)
   {
-      ctx.save();
-      ctx.translate(this.position.x, this.position.y);
-      ctx.scale(this.imgScale, this.imgScale);
-      ctx.drawImage(playerImg, -playerImg.width / 2, -playerImg.height / 2);
-      ctx.restore();
+    this.position.x += direction.x * this.speed * deltaTime;
+    this.position.y += direction.y * this.speed * deltaTime;
+  },
+
+  UpdateBoxPosition: function (direction)
+  {
+    this.box.x += direction.x * this.speed * deltaTime;
+    this.box.y += direction.y * this.speed * deltaTime;
+  },
+
+  UpdateFire: function ()
+  {
+    if((Date.now() - this.lastShotTime) > this.cadency)
+    {
+      this.Fire();
+      this.lastShotTime = Date.now();
+    }
   },
 
   Fire: function ()
   {
-    var bullet = NewBullet({x: this.position.x - 2, y: this.position.y - 60});
+    var bullet = NewBullet({x: this.position.x + this.bulletOffset.x, y: this.position.y + this.bulletOffset.y});
     bullet.Start();
     this.bullets.push(bullet);
   },
