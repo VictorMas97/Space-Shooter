@@ -10,6 +10,10 @@ var time = 0,
     frames    = 0,
     acumDelta = 0;
 
+var startTime = 0;
+var endTime = 0;
+var diff = 0
+
 // images references
 var playerImg, powerUpImg, backgroundImg, playerBulletImg, enemyBulletImg, enemyImg, gameOverImg;
 
@@ -75,6 +79,8 @@ function Start ()
 {
     // setup keyboard events
     SetupKeyboardEvents();
+
+    startTime = new Date();
 
     // init Player
     player.Start();
@@ -151,6 +157,7 @@ function Draw ()
   DrawPoweUps();
   DrawFPS();
   DrawScore();
+  chrono();
 
   if (gameOver)
   {
@@ -383,10 +390,18 @@ function DrawFPS ()
 
 function DrawScore ()
 {
-  var scorePosition = {x: canvas.width / 2.6, y: 30};
+  var scorePosition = {x: canvas.width / 5, y: 30};
   ctx.fillStyle = "white";
   ctx.font = "26px Comic Sans MS";
   ctx.fillText('Score: ' + player.score, scorePosition.x, scorePosition.y);
+}
+
+function DrawGameTime (hours, minutes, secons, milisec)
+{
+  var gameTimePosition = {x: canvas.width / 2, y: 30};
+  ctx.fillStyle = "white";
+  ctx.font = "26px Comic Sans MS";
+  ctx.fillText('Time: ' + hours + ":" + minutes + ":" + secons + ":" + milisec, gameTimePosition.x, gameTimePosition.y);
 }
 
 function DrawGameOver ()
@@ -395,4 +410,34 @@ function DrawGameOver ()
   ctx.save();
   ctx.drawImage(gameOverImg, gameOverPosition.x, gameOverPosition.y);
   ctx.restore();
+}
+
+function chrono()
+{
+  if (!gameOver)
+  {
+    endTime = new Date()
+  }
+
+	diff = endTime - startTime
+	diff = new Date(diff)
+
+	var msec = diff.getMilliseconds()
+	var sec = diff.getSeconds()
+	var min = diff.getMinutes()
+	var hr = diff.getHours() - 1
+
+	if (min < 10)
+		min = "0" + min
+
+	if (sec < 10)
+		sec = "0" + sec
+
+	if(msec < 10)
+		msec = "00" + msec
+
+	else if(msec < 100)
+		msec = "0" + msec
+
+  DrawGameTime (hr, min, sec, msec);
 }
